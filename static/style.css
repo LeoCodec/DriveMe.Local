@@ -1,0 +1,41 @@
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Layout general del admin */
+.admin-grid {
+  display: grid;
+  grid-template-areas:
+    "users files activity"
+    "terminal terminal terminal"
+    "panel panel panel"
+    "adminfiles adminfiles adminfiles";
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Tarjetas */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-users { grid-area: users; }
+.stat-files { grid-area: files; }
+.stat-activity { grid-area: activity; }
+.terminal-log { grid-area: terminal; }
+.admin-panel { grid-area: panel; }
+.admin-files { grid-area: adminfiles; }
+
+pre {
+  background-color: #212529;
+  color: #00ff88;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  height: 200px;
+  overflow-y: auto;
+}
