@@ -22,10 +22,12 @@ login_manager.login_view = 'login'
 
 # ---- MODELO DE USUARIO ----
 class User(UserMixin):
-    def __init__(self, id_, username, password):
+    def __init__(self, id_, username, password, role='user'):
         self.id = id_
         self.username = username
         self.password = password
+        self.role = role
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -82,7 +84,6 @@ def login():
             flash('Credenciales incorrectas', 'danger')
     return render_template('login.html')
 
-# Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -91,20 +92,59 @@ def dashboard():
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            conn = sqlite3.connect('data.db')
+            conn = sqlite3.connect('database.db')
             c = conn.cursor()
-            c.execute("INSERT INTO files (filename, owner) VALUES (?, ?)", (filename, current_user.username))
+            c.execute("INSERT INTO files (filename, user_id) VALUES (?, ?)", (filename, current_user.id))
             conn.commit()
             conn.close()
             logging.info(f'Archivo subido: {filename} por {current_user.username}')
             flash('Archivo subido correctamente', 'success')
 
-    conn = sqlite3.connect('data.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("SELECT filename FROM files WHERE owner=?", (current_user.username,))
+    c.execute("SELECT filename FROM files WHERE user_id=?", (current_user.id,))
     files = c.fetchall()
     conn.close()
     return render_template('dashboard.html', files=files)
+
+
+@app.route('/admin')
+@login_required
+def admin():
+    if current_user.role != 'admin':
+        flash('Acceso denegado. No tienes permisos de administrador.', 'danger')
+        return redirect(url_for('dashboard'))
+
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+
+    # Totales
+    c.execute("SELECT COUNT(*) FROM users")
+    total_users = c.fetchone()[0]
+
+    c.execute("SELECT COUNT(*) FROM files")
+    total_files = c.fetchone()[0]
+
+    # Listado
+    c.execute("SELECT id, username, role FROM users")
+    users = c.fetchall()
+
+    c.execute("""
+        SELECT f.id, f.filename, u.username 
+        FROM files f JOIN users u ON f.user_id = u.id
+    """)
+    files = c.fetchall()
+
+    conn.close()
+
+    return render_template(
+        'admin.html',
+        total_users=total_users,
+        total_files=total_files,
+        users=users,
+        files=files
+    )
+
 
 # Descargar archivos
 @app.route('/download/<filename>')
