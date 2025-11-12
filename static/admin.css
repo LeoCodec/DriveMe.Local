@@ -1,0 +1,124 @@
+body {
+  background: #0f0f0f;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ff4747;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-areas:
+    "div1 div2 div3"
+    "div4 div5 div5"
+    "div6 div5 div5";
+  gap: 1.2rem;
+  padding: 1rem;
+}
+
+.card {
+  background: #181818;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+/* Grid Areas */
+.div1 { grid-area: div1; text-align: center; }
+.div2 { grid-area: div2; text-align: center; }
+.div3 { grid-area: div3; text-align: center; }
+.div4 { grid-area: div4; }
+.div5 { grid-area: div5; }
+.div6 { grid-area: div6; }
+
+.icon {
+  color: #ff4747;
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th,
+.table td {
+  padding: 0.6rem;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.table th {
+  color: #ff4747;
+  font-weight: 600;
+}
+
+.btn-edit, .btn-delete {
+  background: transparent;
+  color: #ff4747;
+  border: 1px solid #ff4747;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+  background: #ff4747;
+  color: #fff;
+}
+
+.terminal-log {
+  font-family: monospace;
+  background: #111;
+  color: #00ff99;
+  overflow-y: auto;
+  height: 180px;
+  font-size: 0.85rem;
+  border: 1px solid #222;
+}
+
+.admin-files ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-files li {
+  background: #222;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .admin-grid {
+    grid-template-areas:
+      "div1"
+      "div2"
+      "div3"
+      "div4"
+      "div5"
+      "div6";
+  }
+}
+pre {
+  background-color: #1e1e1e;
+  color: #00ff99;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  height: 220px;
+  overflow-y: auto;
+}

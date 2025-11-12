@@ -1,29 +1,29 @@
-% extends 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<h3 class="mb-4">Panel de Administración</h3>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+<h3 class="title">Panel de Administración</h3>
 
 <div class="admin-grid">
-  <!-- Métricas rápidas -->
-  <div class="card stat-users">
-    <i class="bi bi-person-fill text-danger fs-2"></i>
-    <p>Usuarios registrados</p>
+  <div class="div1 card">
+    <i class="bi bi-person-fill icon"></i>
+    <h4>Usuarios registrados</h4>
     <h2>{{ total_users }}</h2>
   </div>
 
-  <div class="card stat-files">
-    <i class="bi bi-file-earmark-fill text-danger fs-2"></i>
-    <p>Archivos almacenados</p>
+  <div class="div2 card">
+    <i class="bi bi-file-earmark-fill icon"></i>
+    <h4>Archivos almacenados</h4>
     <h2>{{ total_files }}</h2>
   </div>
 
-  <div class="card stat-activity">
-    <i class="bi bi-activity text-danger fs-2"></i>
-    <p>Eventos registrados</p>
+  <div class="div3 card">
+    <i class="bi bi-activity icon"></i>
+    <h4>Eventos registrados</h4>
     <h2>{{ total_logs }}</h2>
   </div>
 
-  <!-- Logs del sistema -->
-  <div class="card terminal-log">
+  <div class="div4 card terminal-log">
     <h5>🖥️ Log del sistema</h5>
     <pre>
 [INFO] Nuevo usuario creado: profe01
@@ -32,20 +32,21 @@
     </pre>
   </div>
 
-  <!-- Gestión de usuarios y archivos -->
-  <div class="card admin-panel">
+  <div class="div5 card admin-panel">
     <h5>Gestión del sistema</h5>
 
     <section>
       <h6>Usuarios registrados</h6>
       <table class="table table-striped">
-        <thead><tr><th>Usuario</th><th>Rol</th><th>Acción</th></tr></thead>
+        <thead>
+          <tr><th>Usuario</th><th>Rol</th><th>Acción</th></tr>
+        </thead>
         <tbody>
           {% for user in users %}
           <tr>
             <td>{{ user.username }}</td>
             <td>{{ user.role }}</td>
-            <td><button class="btn btn-sm btn-outline-danger">Editar rol</button></td>
+            <td><button class="btn-edit">Editar rol</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -55,14 +56,16 @@
     <section>
       <h6>Archivos subidos</h6>
       <table class="table table-striped">
-        <thead><tr><th>Archivo</th><th>Usuario</th><th>Fecha</th><th>Acción</th></tr></thead>
+        <thead>
+          <tr><th>Archivo</th><th>Usuario</th><th>Fecha</th><th>Acción</th></tr>
+        </thead>
         <tbody>
           {% for file in files %}
           <tr>
             <td>{{ file.name }}</td>
             <td>{{ file.user }}</td>
             <td>{{ file.date }}</td>
-            <td><button class="btn btn-sm btn-outline-danger">Eliminar</button></td>
+            <td><button class="btn-delete">Eliminar</button></td>
           </tr>
           {% endfor %}
         </tbody>
@@ -70,8 +73,7 @@
     </section>
   </div>
 
-  <!-- Archivos personales del admin -->
-  <div class="card admin-files">
+  <div class="div6 card admin-files">
     <h5>📂 Archivos del administrador</h5>
     <ul>
       <li>manual_uso.pdf</li>
