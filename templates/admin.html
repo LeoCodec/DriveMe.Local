@@ -73,13 +73,18 @@
     </section>
   </div>
 
-  <div class="div6 card admin-files">
-    <h5>📂 Archivos del administrador</h5>
-    <ul>
-      <li>manual_uso.pdf</li>
-      <li>configuracion.txt</li>
-      <li>guia_rapida.docx</li>
-    </ul>
-  </div>
+  <<div class="div6 card admin-files">
+  <h5>📂 Archivos del administrador</h5>
+  <ul>
+    <li>manual_uso.pdf</li>
+    <li>configuracion.txt</li>
+    <li>guia_rapida.docx</li>
+  </ul>
+
+  <form action="/admin/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" class="form-control mt-2">
+    <button type="submit" class="btn-upload">Subir archivo</button>
+  </form>
+</div>
 </div>
 {% endblock %}
