@@ -1,0 +1,19 @@
+# Base de datos
+data.db
+
+# Archivos de Python
+__pycache__/
+*.pyc
+
+# Dependencias (si usaras un entorno virtual)
+venv/# Archivos de base de datos
+data.db
+*.sqlite3
+
+# Carpeta de archivos subidos
+uploads/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+.env
