@@ -64,28 +64,28 @@ Este proyecto tiene como propósito aplicar los siguientes conceptos:
 
 ---
 
-## 💾 Estructura del Proyecto
+## 📁 Estructura del Proyecto — DriveMe.Local
 
+```bash
 DriveMe.Local/
 │
-├── app.py # Aplicación principal Flask
-├── database.db # Base de datos SQLite
-├── admin.py # Módulo del panel de administración
+├── app.py              # Aplicación principal Flask
+├── database.db         # Base de datos SQLite
+├── admin.py            # Módulo del panel de administración
 │
 ├── static/
-│ ├── css/
-│ │ ├── style.css
-│ │ └── admin.css
-│ └── uploads/ # Archivos almacenados por usuarios
+│   ├── css/
+│   │   ├── style.css
+│   │   └── admin.css
+│   └── uploads/        # Archivos almacenados por usuarios
 │
 └── templates/
-├── base.html
-├── index.html
-├── dashboard.html
-├── login.html
-├── register.html
-└── admin.html
-
+    ├── base.html
+    ├── index.html
+    ├── dashboard.html
+    ├── login.html
+    ├── register.html
+    └── admin.html
 
 ---
 
@@ -126,6 +126,7 @@ CPU: Intel Core i7-1195G7 (11th Gen)
 GPU: Intel Iris Xe Graphics
 RAM: 16 GB
 Storage: 1 TB SSD
+---
 
 🔄 Flujo de Trabajo
 
@@ -138,6 +139,8 @@ Una vez autenticado, el usuario accede a su dashboard tipo Drive.
 Los archivos subidos se registran en la tabla files con metadatos.
 
 El panel de administración permite revisar usuarios y archivos.
+
+---
 
 📚 Competencias Desarrolladas
 
@@ -152,6 +155,8 @@ Estructuración y documentación técnica
 Desarrollo en entorno Linux (Ubuntu)
 
 Despliegue local con Flask
+
+---
 
 🌐 Conclusión Académica
 
