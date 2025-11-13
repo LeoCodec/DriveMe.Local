@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from wtforms.validators import DataRequired
 import sqlite3, os, logging
+from datetime import datetime
+
 
 # ------------------ CONFIGURACIÓN GENERAL ------------------
 app = Flask(__name__)
@@ -18,6 +23,11 @@ logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+# ------------------ FORMULARIO DE SUBIDA ------------------
+class UploadForm(FlaskForm):
+    file = FileField("Selecciona un archivo", validators=[DataRequired()])
+    submit = SubmitField("Subir Archivo")
 
 # ------------------ MODELO DE USUARIO ------------------
 class User(UserMixin):
@@ -54,14 +64,12 @@ def register():
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
 
-        # Evita duplicados
         c.execute("SELECT id FROM users WHERE username=?", (username,))
         if c.fetchone():
             flash('El usuario ya existe', 'danger')
             conn.close()
             return redirect(url_for('register'))
 
-        # Inserta usuario normal por defecto
         c.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (username, password, 'user'))
         conn.commit()
         conn.close()
@@ -91,7 +99,7 @@ def login():
             logging.info(f'Usuario inició sesión: {username}')
 
             if user_obj.role == 'admin':
-                return redirect(url_for('admin'))
+                return redirect(url_for('admin_panel'))
             else:
                 return redirect(url_for('dashboard'))
         else:
@@ -103,36 +111,45 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    if request.method == 'POST':
-        file = request.files.get('file')
+    form = UploadForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        file = form.file.data
         if file:
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
-            c.execute("INSERT INTO files (filename, user_id) VALUES (?, ?)", (filename, current_user.id))
+            c.execute("""
+                INSERT INTO files (filename, user_id, uploaded_by, uploaded_at)
+                VALUES (?, ?, ?, ?)
+            """, (filename, current_user.id, current_user.username, datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
             conn.commit()
             conn.close()
+
             logging.info(f'Archivo subido: {filename} por {current_user.username}')
             flash('Archivo subido correctamente', 'success')
+            return redirect(url_for('dashboard'))
 
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
-    c.execute("SELECT filename FROM files WHERE user_id=?", (current_user.id,))
+    c.execute("SELECT filename, uploaded_at FROM files WHERE user_id=?", (current_user.id,))
     files = c.fetchall()
     conn.close()
 
-    return render_template('dashboard.html', files=files)
+    return render_template('dashboard.html', files=files, form=form, title="Mi Unidad", page="inicio")
 
 # ---------- PANEL ADMIN ----------
 @app.route('/admin')
 @login_required
-def admin():
+def admin_panel():
     if current_user.role != 'admin':
         flash('Acceso denegado. No tienes permisos de administrador.', 'danger')
         return redirect(url_for('dashboard'))
 
     conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
 
     # Totales
@@ -142,15 +159,18 @@ def admin():
     c.execute("SELECT COUNT(*) FROM files")
     total_files = c.fetchone()[0]
 
-    # Listado de usuarios
+    # Si tienes logs, puedes contar, si no pon en 0
+    total_logs = 0
+
+    # Usuarios
     c.execute("SELECT id, username, role FROM users")
     users = c.fetchall()
 
-    # Listado de archivos
+    # Archivos
     c.execute("""
-        SELECT f.id, f.filename, u.username 
-        FROM files f 
-        JOIN users u ON f.user_id = u.id
+        SELECT filename AS name, uploaded_by AS user, uploaded_at AS date
+        FROM files
+        ORDER BY uploaded_at DESC
     """)
     files = c.fetchall()
 
@@ -160,6 +180,7 @@ def admin():
         'admin.html',
         total_users=total_users,
         total_files=total_files,
+        total_logs=total_logs,
         users=users,
         files=files
     )
@@ -179,9 +200,8 @@ def logout():
     logging.info(f'Usuario cerró sesión: {username}')
     return redirect(url_for('login'))
 
-# ------------------ MAIN ------------------
-if __name__ == '__main__':
-    # Asegura que la base de datos exista con columnas necesarias
+# ------------------ CREAR BASE DE DATOS ------------------
+def init_db():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     c.execute("""
@@ -197,16 +217,15 @@ if __name__ == '__main__':
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             filename TEXT NOT NULL,
             user_id INTEGER,
+            uploaded_by TEXT,
+            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     """)
     conn.commit()
     conn.close()
 
+# ------------------ MAIN ------------------
+if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
-class User(UserMixin):
-    def __init__(self, id_, username, password, role='user'):
-        self.id = id_
-        self.username = username
-        self.password = password
-        self.role = role

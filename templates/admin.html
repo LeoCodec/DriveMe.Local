@@ -1,90 +1,169 @@
-{% extends 'base.html' %}
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - DriveMe Local</title>
 
-<h3 class="title">Panel de Administración</h3>
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 
-<div class="admin-grid">
-  <div class="div1 card">
-    <i class="bi bi-person-fill icon"></i>
-    <h4>Usuarios registrados</h4>
-    <h2>{{ total_users }}</h2>
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+
+  <style>
+    /* Botón Cerrar Sesión */
+    .logout-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #ff4747;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+      transition: background 0.3s ease, transform 0.2s;
+    }
+    .logout-btn:hover {
+      background: #ff2020;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Botón para cerrar sesión -->
+  <button class="logout-btn" onclick="window.location.href='/logout'">
+    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+  </button>
+
+  <div style="padding: 1.5rem;">
+    <h3 class="title">Panel de Administración</h3>
+
+    <div class="admin-grid">
+
+      <!-- Tarjeta de Usuarios -->
+      <div class="div1 card">
+        <i class="bi bi-person-fill icon"></i>
+        <h4>Usuarios registrados</h4>
+        <h2>4</h2>
+      </div>
+
+      <!-- Tarjeta de Archivos -->
+      <div class="div2 card">
+        <i class="bi bi-file-earmark-fill icon"></i>
+        <h4>Archivos almacenados</h4>
+        <h2>12</h2>
+      </div>
+
+      <!-- Tarjeta de Logs -->
+      <div class="div3 card">
+        <i class="bi bi-activity icon"></i>
+        <h4>Eventos registrados</h4>
+        <h2>56</h2>
+      </div>
+
+      <!-- Log del Sistema -->
+      <div class="div4 card terminal-log">
+      <h5>🖥️ Log del sistema</h5>
+      <pre id="terminal-output"></pre>
+      </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const lines = [
+            "[INFO] Nuevo usuario creado: profe01",
+            "[INFO] Archivo subido: evidencia.pdf por profe01",
+            "[INFO] Usuario inició sesión: profe01",
+            "[INFO] Usuario cerró sesión: leocruz",
+            "[INFO] Archivo eliminado: tarea.docx por admin",
+            "[INFO] Rol de profe01 cambiado a 'user'"
+          ];
+
+          const output = document.getElementById("terminal-output");
+          let i = 0;
+
+          function typeLine() {
+            if (i < lines.length) {
+              const line = document.createElement("div");
+              line.classList.add("terminal-line");
+              output.appendChild(line);
+
+              let j = 0;
+              const typer = setInterval(() => {
+                line.textContent += lines[i][j];
+                j++;
+                if (j >= lines[i].length) {
+                  clearInterval(typer);
+                  i++;
+                  setTimeout(typeLine, 500); // espera antes de siguiente línea
+                }
+              }, 30);
+            }
+          }
+
+          typeLine();
+        });
+      </script>
+
+      <!-- Gestión del Sistema -->
+      <div class="div5 card admin-panel">
+        <h5>Gestión del sistema</h5>
+
+        <!-- Tabla de Usuarios -->
+        <section>
+          <h6>Usuarios registrados</h6>
+          <table class="table table-striped">
+            <thead>
+              <tr><th>Usuario</th><th>Rol</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>admin</td><td style="color: #ffc107;">admin</td><td><button class="btn-edit">Editar rol</button></td></tr>
+              <tr><td>profe01</td><td>user</td><td><button class="btn-edit">Editar rol</button></td></tr>
+              <tr><td>leocruz</td><td>user</td><td><button class="btn-edit">Editar rol</button></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Tabla de Archivos -->
+        <section>
+          <h6>Archivos subidos</h6>
+          <table class="table table-striped">
+            <thead>
+              <tr><th>Archivo</th><th>Usuario</th><th>Fecha</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>evidencia.pdf</td><td>profe01</td><td>2025-11-12</td><td><button class="btn-delete">Eliminar</button></td></tr>
+              <tr><td>reporte.docx</td><td>leocruz</td><td>2025-11-11</td><td><button class="btn-delete">Eliminar</button></td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <!-- Archivos del Admin -->
+      <div class="div6 card admin-files">
+        <h5>📂 Archivos del administrador</h5>
+        <ul>
+          <li>manual_uso.pdf</li>
+          <li>configuracion.txt</li>
+          <li>guia_rapida.docx</li>
+        </ul>
+        <form>
+          <input type="file" class="form-control mt-2 input-file">
+          <button type="submit" class="btn-upload" onclick="event.preventDefault(); alert('Botón de subida (solo vista)');">Subir archivo</button>
+        </form>
+      </div>
+
+    </div>
   </div>
 
-  <div class="div2 card">
-    <i class="bi bi-file-earmark-fill icon"></i>
-    <h4>Archivos almacenados</h4>
-    <h2>{{ total_files }}</h2>
-  </div>
-
-  <div class="div3 card">
-    <i class="bi bi-activity icon"></i>
-    <h4>Eventos registrados</h4>
-    <h2>{{ total_logs }}</h2>
-  </div>
-
-  <div class="div4 card terminal-log">
-    <h5>🖥️ Log del sistema</h5>
-    <pre>
-[INFO] Nuevo usuario creado: profe01
-[INFO] Archivo subido: evidencia.pdf por profe01
-[INFO] Usuario inició sesión: profe01
-    </pre>
-  </div>
-
-  <div class="div5 card admin-panel">
-    <h5>Gestión del sistema</h5>
-
-    <section>
-      <h6>Usuarios registrados</h6>
-      <table class="table table-striped">
-        <thead>
-          <tr><th>Usuario</th><th>Rol</th><th>Acción</th></tr>
-        </thead>
-        <tbody>
-          {% for user in users %}
-          <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.role }}</td>
-            <td><button class="btn-edit">Editar rol</button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h6>Archivos subidos</h6>
-      <table class="table table-striped">
-        <thead>
-          <tr><th>Archivo</th><th>Usuario</th><th>Fecha</th><th>Acción</th></tr>
-        </thead>
-        <tbody>
-          {% for file in files %}
-          <tr>
-            <td>{{ file.name }}</td>
-            <td>{{ file.user }}</td>
-            <td>{{ file.date }}</td>
-            <td><button class="btn-delete">Eliminar</button></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-  </div>
-
-  <<div class="div6 card admin-files">
-  <h5>📂 Archivos del administrador</h5>
-  <ul>
-    <li>manual_uso.pdf</li>
-    <li>configuracion.txt</li>
-    <li>guia_rapida.docx</li>
-  </ul>
-
-  <form action="/admin/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" class="form-control mt-2">
-    <button type="submit" class="btn-upload">Subir archivo</button>
-  </form>
-</div>
-</div>
-{% endblock %}
+</body>
+</html>

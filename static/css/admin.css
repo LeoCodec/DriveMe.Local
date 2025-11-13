@@ -1,0 +1,248 @@
+/* === Estilo base === */
+body {
+  background: radial-gradient(circle at top left, #1a1a1a, #000);
+  color: #f1f1f1;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* === Encabezado fijo === */
+header {
+  background: rgba(255, 71, 71, 0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 71, 71, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header h3 {
+  color: #ff4747;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+header button {
+  background: #ff4747;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+header button:hover {
+  background: #ff1f1f;
+  transform: scale(1.05);
+}
+
+/* === Estructura general === */
+.admin-grid {
+  display: grid;
+  grid-template-areas:
+    "div1 div2 div3"
+    "div4 div5 div5"
+    "div6 div5 div5";
+  gap: 1.2rem;
+  padding: 2rem;
+}
+
+/* === Tarjetas === */
+.card {
+  background: rgba(30, 30, 30, 0.7);
+  border-radius: 1.2rem;
+  padding: 1.3rem;
+  box-shadow: 0 0 15px rgba(255, 71, 71, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card:hover {
+  box-shadow: 0 0 25px rgba(255, 71, 71, 0.35);
+  transform: translateY(-5px);
+}
+
+/* === Grid Areas === */
+.div1 { grid-area: div1; text-align: center; }
+.div2 { grid-area: div2; text-align: center; }
+.div3 { grid-area: div3; text-align: center; }
+.div4 { grid-area: div4; }
+.div5 { grid-area: div5; }
+.div6 { grid-area: div6; }
+
+/* === Iconos y títulos === */
+.icon {
+  color: #ff4747;
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 0 8px rgba(255, 71, 71, 0.5));
+}
+
+h4 {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+h2 {
+  color: #00ffcc;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+/* === Tablas === */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+}
+
+.table th {
+  color: #ff4747;
+  font-weight: 600;
+  background-color: rgba(255, 71, 71, 0.05);
+}
+
+/* === Botones === */
+.btn-edit, .btn-delete {
+  background: transparent;
+  color: #ff4747;
+  border: 1px solid #ff4747;
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+  background: #ff4747;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 71, 71, 0.4);
+}
+
+/* === Log del sistema === */
+.terminal-log {
+  font-family: monospace;
+  background: #101010;
+  color: #00ff99;
+  overflow-y: auto;
+  height: 200px;
+  font-size: 0.85rem;
+  border: 1px solid #222;
+  border-radius: 0.8rem;
+  padding: 1rem;
+}
+
+/* === Archivos del admin === */
+.admin-files ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-files li {
+  background: #1e1e1e;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  transition: 0.2s ease;
+}
+
+.admin-files li:hover {
+  background: #2a2a2a;
+  color: #00ffcc;
+}
+
+/* === Input de archivo === */
+.input-file {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  border: 1px solid #333;
+  background: #222;
+  color: #fff;
+}
+
+.btn-upload {
+  margin-top: 0.5rem;
+  background: #ff4747;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-upload:hover {
+  background: #ff1f1f;
+  transform: scale(1.05);
+}
+
+/* === Adaptable === */
+@media (max-width: 900px) {
+  .admin-grid {
+    grid-template-areas:
+      "div1"
+      "div2"
+      "div3"
+      "div4"
+      "div5"
+      "div6";
+  }
+}
+
+.terminal-log {
+  background-color: #111;
+  color: #00ff88;
+  font-family: "Courier New", monospace;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,255,136,0.2);
+  overflow: hidden;
+}
+
+.terminal-line {
+  white-space: pre;
+  margin: 2px 0;
+}
+
+.terminal-log::before {
+  content: "● ● ●";
+  color: #f66;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  letter-spacing: 4px;
+}
+
+#terminal-output {
+  height: 180px;
+  overflow-y: auto;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.terminal-line::after {
+  content: "_";
+  animation: blink 1s infinite;
+  color: #00ff88;
+}
+
