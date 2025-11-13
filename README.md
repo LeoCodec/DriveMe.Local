@@ -15,8 +15,8 @@
 | 📚 **Materia** | Modelos y Metodos Para el Desarolo de Software |
 | 🏫 **Institución** | Universidad del Valle de México (UVM) |
 | 👨‍🏫 **Docente** | Ernesto Gonzales Cardenas|
-| 📅 **Fecha de entrega** | 16 de septiembre de 2025 |
-| 🧩 **Tarea** | A5 - Proyecto Integrador (Etapa 1) |
+| 📅 **Fecha de entrega** | 14 de Noviembre de 2025 |
+| 🧩 **Tarea** | Proyecto Examen Parcial 2 |
 | 💻 **Carrera** | Ingeniería en Sistemas Computacionales |
 
 ---
