@@ -99,7 +99,7 @@ DriveMe.Local/
 | 💾 **Registro Automático** | Inserción de metadatos (`uploaded_by`, `uploaded_at`) |
 | 📊 **Dashboard Interactivo** | Vista tipo Google Drive con íconos y cuadrícula |
 
----
+
 
 ## 🧰 Tecnologías y Dependencias
 
@@ -113,7 +113,7 @@ DriveMe.Local/
 | **Servidor Local** | Werkzeug (integrado en Flask) |
 | **Sistema Operativo** | Ubuntu 24.04.3 LTS |
 
----
+
 
 ## 🖥️ Entorno de Ejecución
 
@@ -126,7 +126,6 @@ CPU: Intel Core i7-1195G7 (11th Gen)
 GPU: Intel Iris Xe Graphics
 RAM: 16 GB
 Storage: 1 TB SSD
----
 
 🔄 Flujo de Trabajo
 
@@ -140,7 +139,7 @@ Los archivos subidos se registran en la tabla files con metadatos.
 
 El panel de administración permite revisar usuarios y archivos.
 
----
+
 
 📚 Competencias Desarrolladas
 
@@ -156,7 +155,6 @@ Desarrollo en entorno Linux (Ubuntu)
 
 Despliegue local con Flask
 
----
 
 🌐 Conclusión Académica
 
